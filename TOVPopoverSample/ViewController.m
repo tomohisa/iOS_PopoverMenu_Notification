@@ -43,22 +43,22 @@
 -(IBAction)clickedButtonA:(UIBarButtonItem*)sender event:(UIEvent*)event {
 
     NSMutableArray *arrRows = [NSMutableArray arrayWithCapacity:0];
-    {
-#warning this code only crash on Release Build.... Don't use this
-        NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
-        [dicRow setValue:NSLocalizedString(@"Pattern 1 Crash",nil) forKey:kDicKeyLinkPopCellText];
-        [arrRows addObject:dicRow];
-        dispatch_block_t block = ^{
-            
-            NSString *str = [NSString stringWithFormat:@"%@",[_tweet valueForKey:@"text"]];
-            
-            [[UIPasteboard generalPasteboard] setString:str];
-            [[JTCAppNotificationManager sharedManger] startTimerNotificationWithMessage:NSLocalizedString(@"Copy succeeded", @"Copy succeeded") dulation:2.5 iconName:@"w17-check.png"];
-
-            
-        };
-        [dicRow setValue:block forKey:kDicKeyLinkPopBlock];
-    }
+//    {
+//#warning this code only crash on Release Build.... Don't use this
+//        NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
+//        [dicRow setValue:NSLocalizedString(@"Pattern 1 Crash",nil) forKey:kDicKeyLinkPopCellText];
+//        [arrRows addObject:dicRow];
+//        dispatch_block_t block = ^{
+//            
+//            NSString *str = [NSString stringWithFormat:@"%@",[_tweet valueForKey:@"text"]];
+//            
+//            [[UIPasteboard generalPasteboard] setString:str];
+//            [[JTCAppNotificationManager sharedManger] startTimerNotificationWithMessage:NSLocalizedString(@"Copy succeeded", @"Copy succeeded") dulation:2.5 iconName:@"w17-check.png"];
+//
+//            
+//        };
+//        [dicRow setValue:block forKey:kDicKeyLinkPopBlock];
+//    }
     {
         NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
         [dicRow setValue:NSLocalizedString(@"Pattern 2 __block",nil) forKey:kDicKeyLinkPopCellText];
@@ -76,22 +76,22 @@
         };
         [dicRow setValue:block forKey:kDicKeyLinkPopBlock];
     }
-    {
-        NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
-        [dicRow setValue:NSLocalizedString(@"Pattern 3 only declare bt crash",nil) forKey:kDicKeyLinkPopCellText];
-        [arrRows addObject:dicRow];
-#warning this code only crash on Release Build.... Don't use this
-        id bt = _tweet;
-        dispatch_block_t block = ^{
-            
-            NSString *str = [NSString stringWithFormat:@"%@",[bt valueForKey:@"text"]];
-            
-            [[UIPasteboard generalPasteboard] setString:str];
-            
-            [[JTCAppNotificationManager sharedManger] startTimerNotificationWithMessage:NSLocalizedString(@"Copy succeeded", @"Copy succeeded") dulation:2.5 iconName:@"w17-check.png"];
-        };
-        [dicRow setValue:block forKey:kDicKeyLinkPopBlock];
-    }
+//    {
+//        NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
+//        [dicRow setValue:NSLocalizedString(@"Pattern 3 only declare bt crash",nil) forKey:kDicKeyLinkPopCellText];
+//        [arrRows addObject:dicRow];
+//#warning this code only crash on Release Build.... Don't use this
+//        id bt = _tweet;
+//        dispatch_block_t block = ^{
+//            
+//            NSString *str = [NSString stringWithFormat:@"%@",[bt valueForKey:@"text"]];
+//            
+//            [[UIPasteboard generalPasteboard] setString:str];
+//            
+//            [[JTCAppNotificationManager sharedManger] startTimerNotificationWithMessage:NSLocalizedString(@"Copy succeeded", @"Copy succeeded") dulation:2.5 iconName:@"w17-check.png"];
+//        };
+//        [dicRow setValue:block forKey:kDicKeyLinkPopBlock];
+//    }
     {
         NSMutableDictionary * dicRow = [NSMutableDictionary dictionaryWithCapacity:0];
         [dicRow setValue:NSLocalizedString(@"USE THIS:Pattern 4 declare bt and copy block",nil) forKey:kDicKeyLinkPopCellText];
@@ -115,6 +115,7 @@
     
     controller.parentPop = _myPop;
     _myPop.popoverContentSize = CGSizeMake(400, 44*arrRows.count+16);
+    _myPop.delegate = self;
     //    pop.delegate = self;
     UIView *button;
     for( UITouch* touch in [event allTouches] ) { 
@@ -184,5 +185,21 @@
 -(IBAction)testTimerNotification:(id)sender{
     [[JTCAppNotificationManager sharedManger] startTimerNotificationWithMessage:NSLocalizedString(@"Timer Notification Test", nil) dulation:2.5 iconName:@"w17-check.png"];
 }
+
+#pragma mark - UIPopoverControlDelegate
+
+/* Called on the delegate when the popover controller will dismiss the popover. Return NO to prevent the dismissal of the view.
+ */
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController{
+    return YES;
+}
+
+/* Called on the delegate when the user has taken action to dismiss the popover. This is not called when -dismissPopoverAnimated: is called directly.
+ */
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
+    _myPop=nil;
+}
+
+
 
 @end

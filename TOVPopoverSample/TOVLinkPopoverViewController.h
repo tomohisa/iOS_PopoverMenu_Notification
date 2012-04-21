@@ -10,6 +10,6 @@
 #define kDicKeyLinkPopCellText @"text"
 #define kDicKeyLinkPopBlock @"block"
 @interface TOVLinkPopoverViewController : UITableViewController
-@property (nonatomic, strong) NSMutableArray* arrayLink;
-@property (strong) UIPopoverController* parentPop;
+@property (strong) NSMutableArray* arrayLink;
+@property (weak) UIPopoverController* parentPop;
 @end
